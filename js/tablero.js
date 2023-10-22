@@ -1,35 +1,33 @@
 const visor = document.getElementById("visor");
 const gridcontainer = document.getElementById("gridcontainer");
-const letras = ["a", "b", "c", "d", "e", "f", "g", "h"];
-const numero = [1, 2, 3, 4, 5, 6, 7, 8];
+const letras = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 // Función para crear el grid
 const crearGrid = () => {
   gridcontainer.style.display = "grid";
-  gridcontainer.style.gridTemplateColumns = "repeat(8, 1fr)";
-  gridcontainer.style.gridTemplateRows = "repeat(8, 1fr)";
+  gridcontainer.style.gridTemplateColumns = "repeat(10, 1fr)";
+  gridcontainer.style.gridTemplateRows = "repeat(10, 1fr)";
   gridcontainer.style.backgroundColor = "grey";
-  gridcontainer.style.width = "464px";
-  gridcontainer.style.height = "464px";
+  gridcontainer.style.width = "580px";
+  gridcontainer.style.height = "580px";
   gridcontainer.style.margin = "2rem auto";
   gridcontainer.style.padding = "auto";
   gridcontainer.style.border = "4px solid white";
 };
 
-// Función para crear el tablero dentro del div con ID "gridcontainer" de 8 por 8
+// Función para crear el tablero de 10x10 dentro del div con ID "gridcontainer"
 const crearTablero = () => {
   crearGrid();
-  // Como ya tengo creado un grid de 8 por 8, creo 64 casillas y las meto en su gridtemplate
   for (let i = 0; i < letras.length; i++) {
-    for (let j = 0; j < numero.length; j++) {
+    for (let j = 0; j < numeros.length; j++) {
       const casilla = document.createElement("div");
-      const id = `${letras[i]}${numero[j]}`;
+      const id = `${letras[i]}${numeros[j]}`;
       casilla.setAttribute("id", id);
       casilla.innerHTML = id;
+      casilla.classList.add("casilla");
       gridcontainer.appendChild(casilla);
-      // Le doy estilos a las casillas
       estiloCasilla(casilla);
-      // Agrega un eventListener para mostrar el ID en la consola al hacer clic
       casilla.addEventListener("click", () => {
         console.log(`ID de la casilla: ${id}`);
       });
@@ -37,21 +35,38 @@ const crearTablero = () => {
   }
 };
 
-// Función para dar estilos a las casillas, uno blanco uno negro
+// Función para dar estilos a las casillas
 const estiloCasilla = (casilla) => {
+  casilla.style.width = "50px";
+  casilla.style.height = "50px";
   casilla.style.border = "1px solid black";
-  casilla.style.width = "auto";
-  casilla.style.height = "56px";
+  casilla.style.fontSize = "1.5rem";
   casilla.style.textAlign = "center";
-  casilla.style.fontSize = "30px";
-  casilla.style.fontWeight = "bold";
+  casilla.style.lineHeight = "50px";
   casilla.style.color = "blue";
-  casilla.style.display = "flex";
-  casilla.style.justifyContent = "center";
-  casilla.style.alignItems = "center";
 };
+// Función para dar estilos a las casillas, uno blanco y uno negro
+function pintarTablero() {
+  const casillas = document.querySelectorAll(".casilla");
+  casillas.forEach((casilla, index) => {
+    const fila = Math.floor(index / 10);
+    if (fila % 2 === 0) {
+      if (index % 2 === 0) {
+        casilla.style.backgroundColor = "white";
+      } else {
+        casilla.style.backgroundColor = "black";
+      }
+    } else {
+      if (index % 2 === 0) {
+        casilla.style.backgroundColor = "black";
+      } else {
+        casilla.style.backgroundColor = "white";
+      }
+    }
+  });
+}
 
-// Cargar el tablero al cargar la página
 window.onload = () => {
   crearTablero();
+  pintarTablero();
 };
