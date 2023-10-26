@@ -2,6 +2,19 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
+body{
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #0e4166;
+  background-image: linear-gradient(to bottom, rgba(14, 65, 102, 0.86), #0e4166);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
 svg {
   position: absolute;
   top: 0;
@@ -16,23 +29,60 @@ svg {
 .container{
   border: 1px solid rgb(71, 7, 199);
   position: relative;
-  width: 100vw;
-  height: auto;
-  min-width: 600px;
+  width: 1200px;
+  height: 100vh;
+  max-height: 600px;
   margin: 0 auto;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  
   align-items: center;
+}
+.visor{
+  position: relative;
+  top:0;
+  width: 800px;
+  height: 600px;
+  border: 1px solid green;
 }
 .colorea{
   color: rgb(220, 239, 239);
-  font-size: 3rem;
+  font-size: 2rem;
   margin: 0;
+  text-align: center;
 
 }
-.pieza{
+.fichas{
+  margin: 0 auto;
+  display: flex;
+  width: 400px;
+  height: 50px;
+  flex-direction: column;
+}
+.piezablanca, .piezanegra{
   width: 25px;
   height: 25px;
+  margin:0.2rem;
+  z-index: 0;
+  
+
+
+}
+.piezablanca{
+  background-color: rgb(220, 239, 239);
+  border-radius: 50%;
+  border: 2px solid rgb(94, 236, 236);
+  box-shadow: 0 0 2px 0 rgb(220, 239, 239);
+}
+.piezanegra{
+  background-color: rgb(44, 36, 63);
+  border-radius: 50%;
+  border: 2px solid rgb(0, 0, 0);
+  box-shadow: 0 0 2px 0 rgb(2, 18, 31);
+}
+.casilla{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -31,17 +31,22 @@
     </g>
     </svg>
     <main class="container"> 
-      <h2 class="colorea">Juego de las Damas</h2>  
-      <img class="pieza" src="./assets/imagenes/pieza.png" alt="ficha"> 
-        <div class="gridcontainer" id="gridcontainer">
+      <section class="visor">
+          <h2 class="colorea">Juego de las Damas</h2>
+        <section class="fichas">  
+          <img class="piezablanca" src="./assets/imagenes/pieza.png" alt="ficha"> 
+          <img class="piezanegra" src="./assets/imagenes/pieza.png" alt="ficha"> 
+        </section>
+          <div class="gridcontainer" id="gridcontainer">
           <!--genero dinamicamente mi tablero aqui-->
           
-        </div> 
-        <div class="turno" id="turno">
-          <h3>Turno de las <span id="turnoJugador">Blancas</span></h3>
-        </div>
-        <div class="ganador" id="ganador">
-          <h3 class ="middle-text" id="ganadorJugador"></h3>
+          </div> 
+          <div class="turno" id="turno">
+            <h3>Turno de las <span id="turnoJugador">Blancas</span></h3>
+          </div>
+          <div class="ganador" id="ganador">
+            <h3 class ="middle-text" id="ganadorJugador"></h3>
+      </section>
     </main>
     <script src="./js/tablero.js"></script>
   </body>
