@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Juego de las Damas</title>
-    <link rel="stylesheet" href="./assets/css/tablero.css" />
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
@@ -25,29 +24,62 @@
       <use xlink:href='#wave' opacity=".6">
         <animateTransform attributeName="transform" attributeType="XML" type="translate" dur="8s" calcMode="spline" values="-270 230;243 220;-270 230" keyTimes="0; .6; 1" keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0" repeatCount="indefinite" />
       </use>
-      <use xlink:href='#wave' opacty=".9">
+      <use xlink:href='#wave' opacity=".9">
         <animateTransform attributeName="transform" attributeType="XML" type="translate" dur="6s" calcMode="spline" values="0 230;-140 200;0 230" keyTimes="0; .4; 1" keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0" repeatCount="indefinite" />
       </use>
     </g>
     </svg>
-    <main class="container"> 
-      <section class="visor">
+    <main class="container border border-ext"> 
+      <section class="visor border">
           <h2 class="colorea">Juego de las Damas</h2>
         <section class="fichas">  
           <img class="piezablanca" src="./assets/imagenes/pieza.png" alt="ficha"> 
           <img class="piezanegra" src="./assets/imagenes/pieza.png" alt="ficha"> 
         </section>
+        <section class="guia_vertical">
+          <p class="letras">A</p>
+          <p class="letras">B</p>
+          <p class="letras">C</p>
+          <p class="letras">D</p>
+          <p class="letras">E</p>
+          <p class="letras">F</p>
+          <p class="letras">G</p>
+          <p class="letras">H</p>
+        </section> 
+        <section class="guia_horizontal">
+          <p class="numeraciones">1</p>
+          <p class="numeraciones">2</p>
+          <p class="numeraciones">3</p>
+          <p class="numeraciones">4</p>
+          <p class="numeraciones">5</p>
+          <p class="numeraciones">6</p>
+          <p class="numeraciones">7</p>
+          <p class="numeraciones">8</p>
+         </section>
           <div class="gridcontainer" id="gridcontainer">
           <!--genero dinamicamente mi tablero aqui-->
           
-          </div> 
+          </div>
+         
+          <section class="guia_horizontal">
+            <p class="numeraciones">1</p>
+            <p class="numeraciones">2</p>
+            <p class="numeraciones">3</p>
+            <p class="numeraciones">4</p>
+            <p class="numeraciones">5</p>
+            <p class="numeraciones">6</p>
+            <p class="numeraciones">7</p>
+            <p class="numeraciones">8</p>
+           </section>
+            
           <div class="turno" id="turno">
-            <h3>Turno de las <span id="turnoJugador">Blancas</span></h3>
+            <!-- <h3>Turno de las <span id="turnoJugador">Blancas</span></h3> -->
           </div>
           <div class="ganador" id="ganador">
             <h3 class ="middle-text" id="ganadorJugador"></h3>
       </section>
     </main>
     <script src="./js/tablero.js"></script>
+    <!-- <script src="./js/logicaMovimiento.js"></script> -->
   </body>
 </html>
