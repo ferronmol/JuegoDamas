@@ -1,0 +1,60 @@
+/*main styles*/
+.aside_white,
+.aside_black {
+  width: 200px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 15px;
+  text-align: center;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto,"Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  padding-top: 1rem;
+  color: var(--color-whitepiece);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 1.5rem;
+}
+.aside_white {
+  left: 45px;
+}
+.aside_black {
+  right: 45px;
+}
+.turn{
+  width: 120px;
+  height: 50px;
+  background-color: powderblue;
+  margin: 0 auto;
+  border-radius: 1rem;
+  border: gold 4px solid;
+  text-align: center;
+  line-height: 50px;
+  display: none;
+}
+.turn_text{
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding:0;
+  margin: 0;
+  color: #630404;
+  
+}
+.visor_info{
+  top: 100px;
+  width: 140px;
+  height: 70px;
+  border-radius: 1rem;
+  border: gold 4px solid;
+  background-color: azure;
+  margin: 0 auto;
+  text-align: center;
+}
+.info_player{
+  font-size: 1rem;
+  font-weight: 600;
+  padding:0;
+  margin: 0;
+  color: #630404;
+}

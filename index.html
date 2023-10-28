@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Juego de las Damas</title>
-    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/board.css" />
+    <link rel="stylesheet" href="./assets/css/visor.css" />
   </head>
   <body>
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
@@ -30,56 +31,71 @@
     </g>
     </svg>
     <main class="container border border-ext"> 
-      <section class="visor border">
-          <h2 class="colorea">Juego de las Damas</h2>
-        <section class="fichas">  
-          <img class="piezablanca" src="./assets/imagenes/pieza.png" alt="ficha"> 
-          <img class="piezanegra" src="./assets/imagenes/pieza.png" alt="ficha"> 
+      <!-- start asides -->
+      <aside class="aside_white" id="aside_white">
+        <h2 class="aside-title">BLANCAS</h2>
+        <section class="turn" id="white_turn">
+          <p class="turn_text">TURNO</p>
         </section>
-        <section class="guia_vertical">
-          <p class="letras">A</p>
-          <p class="letras">B</p>
-          <p class="letras">C</p>
-          <p class="letras">D</p>
-          <p class="letras">E</p>
-          <p class="letras">F</p>
-          <p class="letras">G</p>
-          <p class="letras">H</p>
-        </section> 
-        <section class="guia_horizontal">
-          <p class="numeraciones">1</p>
-          <p class="numeraciones">2</p>
-          <p class="numeraciones">3</p>
-          <p class="numeraciones">4</p>
-          <p class="numeraciones">5</p>
-          <p class="numeraciones">6</p>
-          <p class="numeraciones">7</p>
-          <p class="numeraciones">8</p>
-         </section>
-          <div class="gridcontainer" id="gridcontainer">
-          <!--genero dinamicamente mi tablero aqui-->
-          
-          </div>
-         
-          <section class="guia_horizontal">
-            <p class="numeraciones">1</p>
-            <p class="numeraciones">2</p>
-            <p class="numeraciones">3</p>
-            <p class="numeraciones">4</p>
-            <p class="numeraciones">5</p>
-            <p class="numeraciones">6</p>
-            <p class="numeraciones">7</p>
-            <p class="numeraciones">8</p>
-           </section>
-            
-          <div class="turno" id="turno">
-            <!-- <h3>Turno de las <span id="turnoJugador">Blancas</span></h3> -->
-          </div>
-          <div class="ganador" id="ganador">
-            <h3 class ="middle-text" id="ganadorJugador"></h3>
+        <section class="visor_info">          
+          <p class="info_player" id="info_player1"></p>        
+        </section>
+      </aside>
+      <aside class="aside_black" id="aside_black">
+        <h2 class="aside-title">NEGRAS</h2>
+        <section class="turn" id="black_turn">
+          <p class="turn_text">TURNO</p>
+        </section>
+        <section class="visor_info">          
+          <p class="info_player" id="info_player2"></p>
+        </section>
+      </aside>
+      <!-- end asides -->
+      <!-- start visor -->
+      <section class="visor border">
+          <h2 class="main-tittle">Juego de las Damas</h2>
+          <section class="pieces">  
+            <img class="whitepieces" src="./assets/images/piece.png" alt="piece"> 
+            <img class="blackpieces" src="./assets/images/piece.png" alt="piece"> 
+          </section>
+          <section class="vertical_bar">
+          <p class="letters">A</p>
+          <p class="letters">B</p>
+          <p class="letters">C</p>
+          <p class="letters">D</p>
+          <p class="letters">E</p>
+          <p class="letters">F</p>
+          <p class="letters">G</p>
+          <p class="letters">H</p>
+          </section> 
+          <section class="horizontal_bar">
+          <p class="numbers">1</p>
+          <p class="numbers">2</p>
+          <p class="numbers">3</p>
+          <p class="numbers">4</p>
+          <p class="numbers">5</p>
+          <p class="numbers">6</p>
+          <p class="numbers">7</p>
+          <p class="numbers">8</p>
+          </section>
+          <!-- start board zone -->
+          <section class="gridcontainer" id="gridcontainer">
+          </section>
+          <!-- end board zone -->              
+          <section class="horizontal_bar">
+            <p class="numbers">1</p>
+            <p class="numbers">2</p>
+            <p class="numbers">3</p>
+            <p class="numbers">4</p>
+            <p class="numbers">5</p>
+            <p class="numbers">6</p>
+            <p class="numbers">7</p>
+            <p class="numbers">8</p>
+          </section>      
       </section>
+      <!-- end visor -->
     </main>
-    <script src="./js/tablero.js"></script>
-    <!-- <script src="./js/logicaMovimiento.js"></script> -->
+    <script src="./js/board.js"></script>
+    <script src="./js/logicMovement.js"></script> 
   </body>
 </html>

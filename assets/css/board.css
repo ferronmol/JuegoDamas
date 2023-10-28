@@ -1,3 +1,7 @@
+:root{
+  --color-whitepiece: rgb(206, 230, 230);
+}
+
 html {
   box-sizing: border-box;
   margin: 0;
@@ -6,7 +10,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
-  background-color: #0e4166;
+  background-color:  #0e4166;
   background-image: linear-gradient(
     to bottom,
     rgba(14, 65, 102, 0.86),
@@ -35,7 +39,6 @@ svg {
   );
 }
 .container {
-  border: 1px solid rgb(71, 7, 199);
   position: relative;
   width: 1400px;
   height: 100vh;
@@ -44,7 +47,6 @@ svg {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-
   align-items: center;
 }
 .visor {
@@ -60,56 +62,58 @@ svg {
   border-top-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
-.border-ext{
+.border-ext {
   border: rgb(110, 217, 232) 5px solid;
   border-top: transparent;
 }
-.colorea {
+.main-tittle {
   color: rgb(220, 239, 239);
   font-size: 2rem;
   margin: 0;
   text-align: center;
 }
-.fichas {
+.pieces {
   margin: 0 auto;
   display: flex;
   width: 400px;
   height: 60px;
   flex-direction: column;
 }
-.piezablanca,
-.piezanegra {
-  width: 25px;
-  height: 25px;
+.whitepieces,
+.blackpieces {
+  width: 28px;
+  height: 28px;
   margin: 0.2rem;
   box-sizing: border-box;
+  z-index: 999;
 }
-.piezablanca {
+.whitepieces {
   background-color: rgb(220, 239, 239);
   border-radius: 50%;
   border: 2px solid rgb(94, 236, 236);
   box-shadow: 0 0 2px 0 rgb(220, 239, 239);
 }
-.piezanegra {
+.blackpieces {
   background-color: rgb(44, 36, 63);
   border-radius: 50%;
   border: 2px solid rgb(0, 0, 0);
   box-shadow: 0 0 2px 0 rgb(2, 18, 31);
 }
-.casilla {
+.squares {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.guia_horizontal{
+.horizontal_bar {
   margin: 0 auto;
   width: 400px;
   height: 2rem;
   display: flex;
   flex-direction: row;
-  justify-content: space-around
+  justify-content: space-around;
 }
-.numeraciones,.letras{
+.numbers,
+.letters{
   width: 30px;
   height: 30px;
   font-size: 1rem;
@@ -120,18 +124,18 @@ svg {
   justify-content: center;
   align-items: center;
 }
-.guia_vertical{
+.vertical_bar {
   position: absolute;
-  top:9rem;
-  left:10rem;
+  top: 9rem;
+  left: 10rem;
   width: 2rem;
   height: 400px;
   display: flex;
-  flex-direction:column-reverse;
+  flex-direction: column-reverse;
   align-items: center;
   justify-content: space-around;
 }
-
-.gridcontainer{
-  margin-top: 0;;
+.gridcontainer {
+  margin-top: 0;
 }
+
