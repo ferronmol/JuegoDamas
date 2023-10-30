@@ -31,7 +31,7 @@
   border: gold 4px solid;
   text-align: center;
   line-height: 50px;
-  display: none;
+  margin-bottom: 1rem;
 }
 .turn_text{
   font-size: 1.5rem;
@@ -43,13 +43,14 @@
 }
 .visor_info{
   top: 100px;
-  width: 140px;
+  width: 160px;
   height: 70px;
   border-radius: 1rem;
   border: gold 4px solid;
   background-color: azure;
   margin: 0 auto;
   text-align: center;
+  line-height: 30px;
 }
 .info_player{
   font-size: 1rem;

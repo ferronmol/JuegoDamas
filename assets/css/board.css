@@ -94,9 +94,9 @@ svg {
   box-shadow: 0 0 2px 0 rgb(220, 239, 239);
 }
 .blackpieces {
-  background-color: rgb(44, 36, 63);
+  background-color: rgb(45, 38, 61);
   border-radius: 50%;
-  border: 2px solid rgb(0, 0, 0);
+  border: 2px solid rgb(94, 236, 236);
   box-shadow: 0 0 2px 0 rgb(2, 18, 31);
 }
 .squares {
