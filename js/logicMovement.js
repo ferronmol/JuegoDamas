@@ -47,8 +47,8 @@ function selectPieces(seleccion) {
   if (selectedPiece !== null) {
     selectedPiece.classList.remove("selected");
     // restauro el tamaño original
-    selectedPiece.style.width = "28px";
-    selectedPiece.style.height = "28px";
+    selectedPiece.style.width = "30px";
+    selectedPiece.style.height = "30px";
     //console.log("The piece " + selectedPiece.parentNode.getAttribute("boardID") + " has been deselected");
   }
   // le pongo a la imagen la clase selected
@@ -93,6 +93,7 @@ function updateInfo(selectedPiece) {
 // Función para obtener la fila y columna a partir del ID de la casilla
 function getLetterAndNumber(boardID) {
   // El primer caracter del ID de la casilla es la fila entre a y h
+  //tengo que pasar la letra a numero
   const letter = boardID.charAt(0);
   // El segundo caracter del ID de la casilla es la columna
   const number = parseInt(boardID.charAt(1));
@@ -103,53 +104,36 @@ function getLetterAndNumber(boardID) {
 /* ------------------------OPTIONS MOVEMENT ---------------------------------------------- */
 //no se puede poner en casillas blancas por lo que creo un validBoardMove en elque le quito a validBoard las posiciones de color negro
 
-// Función para obtener movimientos válidos para una pieza
-function getValidMoves(selectedPieceArray, validMovesBoard) {
-  //selectedPieceArray = [boardID, state]
-  const boardID = selectedPieceArray[0]; //la casilla donde esta la pieza
-  const state = selectedPieceArray[1]; //el estado de la pieza (whitepiece o blackpiece)
-  let validMoves = []; //array de movimientos validos
-  const [letter, number] = getLetterAndNumber(selectedPieceArray[0]);
-  const letterIndex = letters.indexOf(letter);
-  let direccion = [[-1], [-1], [-1, 1], [1, -1], [1, 1]];
-  // console.log("Letter:", letter);
-  // console.log("Number:", number);
+/* ---- SACAR EL INDICE DE LAS LETRAS-----*/
 
-  for (let i = 0; i < direccion.length; i++) {
-    const x = direccion[i][0];
-    const y = direccion[i][1];
-    const newLetterIndex = letterIndex + x;
-    const newNumber = number + y;
-
-    if (
-      isValidSquare(newLetterIndex, newNumber) &&
-      isEmptySquare(newLetterIndex, newNumber)
-    ) {
-      const newLetter = letters[newLetterIndex];
-      const newSquareID = `${newLetter}${newNumber}`;
-      console.log("New Letter:", newLetter);
-      console.log("New Number:", newNumber);
-      validMoves.push(newSquareID);
-    }
+function getAdjustedIndex(letter) {
+  const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  const index = letters.indexOf(letter);
+  if (index !== -1) {
+    return index;
   }
-  return validMoves; //devuelvo el array de movimientos validos
-} //fin de la funcion getValidMoves
-
-// Función para verificar si una casilla es válida
-function isValidSquare(letterIndex, number) {
-  //si la fila y la columna de la casilla estan entre 0 y 7 devuelve true
-  if (number >= 1 && number <= 8 && letterIndex >= 0 && letterIndex <= 7) {
-  const isValid = true 
-  console.log("casillas valida");
-  } else {
-  console.log("casilla invalida");
+  return -1; // Letra no válida
 }
-}
+/* ---- VER SI LAS CASILLAS POSIBLES SON VALIDAS-----*/
 
-// Función para verificar si una casilla está vacía
-function isEmptySquare(letter, number) {
-  const square = document.querySelector(`[boardID="${letter}${number}"]`);
+function isValidSquare(adjustedIndex, number) {
+  const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  const squareID = letters[adjustedIndex] + number;
   
+  if (number >= 1 && number <= 8 && adjustedIndex >= 0 && adjustedIndex <= 7) {
+    console.log("Valid square:", squareID);
+    return true;
+  } else {
+    console.log("Invalid square:", squareID);
+    return false;
+  }
+}
+/* ---- FUNCION BOOLEANA SI ESTA LA CASILLA VACIA-----*/
+
+function isEmptySquare(adjustedIndex, number) {
+  const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  const letter = letters[adjustedIndex];
+  const square = document.querySelector(`[boardID="${letter}${number}"]`);
   if (square !== null) {
     const state = square.getAttribute("state");
     const isEmpty = state === "empty";
@@ -160,6 +144,47 @@ function isEmptySquare(letter, number) {
     return false;
   }
 }
+
+/*------- Función para obtener movimientos válidos para una pieza-----*/
+function getValidMoves(selectedPieceArray, validMovesBoard) {
+  const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  //selectedPieceArray = [boardID, state]
+  const boardID = selectedPieceArray[0]; //la casilla donde esta la pieza
+  const state = selectedPieceArray[1]; //el estado de la pieza (whitepiece o blackpiece)
+  const [letter, number] = getLetterAndNumber(selectedPieceArray[0]);
+  const adjustedIndex = getAdjustedIndex(letter);
+  // console.log("adjustedIndex", adjustedIndex); //OK
+  const validMoves = [];
+  let direccion = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+   console.log("Letter:", letter); 
+   console.log("Number:", number); 
+   console.log("indice", adjustedIndex); 
+
+  for (let i = 0; i < direccion.length; i++) {
+    const [x, y] = direccion[i];
+    
+    const newLetterIndex = adjustedIndex + x;
+    const newNumber = number + y;
+     console.log("New Letter Index:", newLetterIndex);
+     console.log("New Number", newNumber);
+
+     if (
+      newLetterIndex >= 0 && newLetterIndex < letters.length &&
+      newNumber >= 1 && newNumber <= 8
+    ) {
+      const newLetter = letters[newLetterIndex];
+      const newSquareID = `${newLetter}${newNumber}`;
+      if (isValidSquare(newLetterIndex, newNumber) && isEmptySquare(newLetterIndex, newNumber)) {
+        validMoves.push(newSquareID);
+      }
+    }
+  }
+  return validMoves; //devuelvo el array de movimientos validos
+} 
+//fin de la funcion getValidMoves
+
+
+
 
 // Función para verificar si una casilla tiene una pieza enemiga
 // function isEnemyPiece(letter, number, state) { //letter y number son  la fila y columna de la casilla

@@ -81,8 +81,8 @@ svg {
 }
 .whitepieces,
 .blackpieces {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   margin: 0.2rem;
   box-sizing: border-box;
   z-index: 999;
