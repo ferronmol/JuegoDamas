@@ -1,3 +1,8 @@
+// board.js
+import { isPieceOfCurrentPlayer, startGame } from './turns.js';
+import { getValidMoves , selectPieces } from './logicMovement.js';
+
+
 const visor = document.getElementById("visor");
 const gridcontainer = document.getElementById("gridcontainer");
 const letters = ["H", "G", "F", "E", "D", "C", "B", "A"];
@@ -128,8 +133,7 @@ function infoBoard() {
   squares.forEach((square) => {
     const state = square.getAttribute("state");
     const color = square.getAttribute("color")
-    // console.log(`The square ${square.getAttribute("boardID")} has the state: ${state}`);
-   
+    // console.log(`The square ${square.getAttribute("boardID")} has the state: ${state}`);  
     //las casillas con el estado vacia en el array emptyBoard
     if (state == "empty") {
       emptyBoard.push(square.getAttribute("boardID"));
@@ -147,26 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
   paintBoard();
   placeInitialPieces();
   infoBoard();
+  startGame();
 });
 
-// si dentro de mi gridcontainer hago click en una casilla o su children (img) mostrar estado de la casilla
-gridcontainer.addEventListener("click", (e) => {
-  if (e.target.classList.contains("squares")) {
-    console.log(
-      "The boardID: " +
-        e.target.getAttribute("boardID") +
-        " has state: " +
-        e.target.getAttribute("state")
-    );
-    
-  }
-  //si tiene cualquier etiqueta img  dentro  de la casilla
-  if (e.target.tagName === "IMG") {
-    //muestra el estado de la casilla usando parentNode que es el nodo padre
-    //console.log("The boardID: " + e.target.parentNode.getAttribute("boardID") + " has state: " + e.target.parentNode.getAttribute("state"));
-    //quiero pasar a la funcion selectPieces la imagen  pieza seleccionada
-    let seleccion = e.target; //seleccion es la imagen de la pieza seleccionada
-    //console.log(seleccion);
-    selectPieces(seleccion);
-  }
-});
+

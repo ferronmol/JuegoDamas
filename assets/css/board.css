@@ -138,4 +138,9 @@ svg {
 .gridcontainer {
   margin-top: 0;
 }
+.validColor{
+  background-color: rgb(107, 20, 188);
+  z-index: 1;
+  
+}
 
