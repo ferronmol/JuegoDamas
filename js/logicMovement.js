@@ -1,6 +1,13 @@
-import { updateInfoPiece, paintValidMoves, changeTurn, clearPaint, isPieceOfCurrentPlayer } from "./turns.js";
+import {
+  updateInfoPiece,
+  paintValidMoves,
+  changeTurn,
+  clearPaint,
+  isPieceOfCurrentPlayer,
+  isWhiteTurn,
+} from "./turns.js";
 
-window.isPieceMoved = false; 
+window.isPieceMoved = false;
 let validMoves = [];
 let selectedPiece = null; // Variable global para almacenar la pieza seleccionada
 let selectedPieceArray = []; // Array para almacenar el boardID y el estado de la pieza seleccionada
@@ -22,6 +29,18 @@ gridcontainer.addEventListener("click", (e) => {
     let seleccion = e.target; //seleccion es la imagen de la pieza seleccionada
     //console.log(seleccion);
     selectPieces(seleccion);
+  }
+});
+// Añade otro evento click para mover la pieza cuando sea necesario
+gridcontainer.addEventListener("click", (e) => {
+  // Asegúrate de que haya una pieza seleccionada y que se haya hecho clic en una casilla válida
+  if (
+    selectedPiece !== null &&
+    e.target.classList.contains("squares") &&
+    e.target.style.backgroundColor === "green"
+  ) {
+    movePiece(selectedPiece, validMoves);
+    selectedPiece = null; // Restablece la pieza seleccionada después de moverla
   }
 });
 /* ---------------------------------- MOVEMENT FUNCTIONS-------------------------------- */
@@ -131,35 +150,52 @@ export function getValidMoves(selectedPieceArray, validMovesBoard) {
 // Función que recibe la  img  pieza seleccionada y la guarda en la variable global selectedPiece
 
 export function selectPieces(seleccion) {
-  // le paso la img de la pieza seleccionada
-  
-  // Si existe una pieza seleccionada (¡selectedPiece!!) elimino la clase selected
-  if (selectedPiece !== null && selectedPiece.classList.contains("selected") && isPieceOfCurrentPlayer(seleccion)) {
-    selectedPiece.classList.remove("selected");
-    // restauro el tamaño original
-    selectedPiece.style.width = "30px";
-    selectedPiece.style.height = "30px";
+  isPieceMoved = false;
+  // Obtengo el color de la pieza seleccionada
+  const pieceColor = seleccion.classList.contains("whitepieces")
+    ? "white"
+    : "black";
+  // Verifico si es el turno correcto para seleccionar piezas
+  if (
+    (pieceColor === "white" && isWhiteTurn) ||
+    (pieceColor === "black" && !isWhiteTurn)
+  ) {
+    // Obtengo el boardID y el estado de la pieza seleccionada
+    selectedPieceArray = [
+      seleccion.parentNode.getAttribute("boardID"),
+      seleccion.parentNode.getAttribute("state"),
+    ];
+    // Restablezco la clase "selected" y el tamaño original de las otras piezas
+    const allPieces = document.querySelectorAll(".whitepieces, .blackpieces");
+    allPieces.forEach((piece) => {
+      if (piece !== seleccion) {
+        piece.classList.remove("selected");
+        piece.style.width = "30px";
+        piece.style.height = "30px";
+      }
+    });
+    // le pongo a la imagen la clase selected
+    seleccion.classList.add("selected");
+    // cambio el tamaño de la imagen de la pieza seleccionada
+    seleccion.style.width = "50px";
+    seleccion.style.height = "50px";
+    //actualizo la variable global selectedPiece
+    selectedPiece = seleccion;
+    console.log("Intentando mover la pieza: ", selectedPiece); //ok
+    //actualizo la info del aside
+    updateInfoPiece(selectedPiece);
+
+    // Obtengo los movimientos válidos y los almaceno en el array validMoves
+    validMoves.length = 0; // Vacío el array validMoves
+    // Obtengo los movimientos válidos y los almaceno en el array validMoves
+    validMoves.push(...getValidMoves(selectedPieceArray));
+    console.log("validMoves", validMoves);
+    paintValidMoves(validMoves);
+    isPieceMoved = false;
+  } else {
+    // Es el turno incorrecto, no hago nada
+    console.log("No es tu turno para seleccionar piezas");
   }
-  // le pongo a la imagen la clase selected
-  seleccion.classList.add("selected");
-  // cambio el tamaño de la imagen de la pieza seleccionada
-  seleccion.style.width = "50px";
-  seleccion.style.height = "50px";
-  // Actualizo el array selectedPieceArray
-  selectedPieceArray = [
-    seleccion.parentNode.getAttribute("boardID"),
-    seleccion.parentNode.getAttribute("state"),
-  ];
-  // Obtengo los movimientos válidos y los almaceno en el array validMoves
-  validMoves.length = 0; // Vacío el array
-  validMoves.push(...getValidMoves(selectedPieceArray));
-  console.log("validMoves", validMoves);
-  paintValidMoves(validMoves);
-  //actualizo la variable global selectedPiece
-  selectedPiece = seleccion;
-  movePiece(selectedPiece, validMoves);
-  //actualizo la info del aside
-  updateInfoPiece(selectedPiece);
 }
 // Función para verificar si una casilla tiene una pieza enemiga
 // function isEnemyPiece(letter, number, state) { //letter y number son  la fila y columna de la casilla
@@ -172,41 +208,34 @@ export function selectPieces(seleccion) {
 // Función para mover la pieza seleccionada a la casilla de destino
 //debe recibir el boardID de la casilla inicial  que esta selecionada y el boardID de la casilla de destino la que hago clik
 export function movePiece(selectedPiece, validMoves) {
-  let isPieceMoved = false; // Variable para controlar si la pieza se ha movido 
-  //pongo un listener en las casillas negras
-  gridcontainer.addEventListener("click", (e) => {
-    if (e.target.classList.contains("squares") && e.target.style.backgroundColor === "green" && !isPieceMoved) {
-      console.log(selectedPiece);
-      let destino = e.target;
-      //let origin = selectedPiece.parentNode; //origin no se usa
-      //ya se que la casilla verde es valida y vacia
-      if (isPieceOfCurrentPlayer(selectedPiece)){ //si la pieza seleccionada es del jugador actual
-        //cambio el estado de la casilla de origen a state empty
-        selectedPiece.parentNode.setAttribute("state", "empty");
-        //cambio el estado de la casilla de destino a state whitepiece
-        console.log(destino);
-        //muevo la pieza a la casilla de destino
-        destino.appendChild(selectedPiece); 
-        //cambio el estado de la casilla destino a state whitepiece
-        destino.setAttribute("state", "whitepiece");
-        console.log(selectedPiece.parentNode);
-        selectedPiece.parentNode.setAttribute("state", "whitepiece");
+  let isPieceMoved = false;
 
-        //cambio el background-color  de las casillas verdes a black
+  // Maneja el movimiento directamente sin añadir un nuevo oyente del evento
+  gridcontainer.addEventListener("click", (e) => {
+    if (
+      e.target.classList.contains("squares") &&
+      e.target.style.backgroundColor === "green" &&
+      validMoves.includes(e.target.getAttribute("boardID"))
+    ) {
+      let destino = e.target;
+      if (isPieceOfCurrentPlayer(selectedPiece)) {
+        destino.setAttribute("state", "whitepiece");
+        destino.appendChild(selectedPiece);
+        selectedPiece.parentNode.setAttribute("state", "empty");
         destino.style.backgroundColor = "black";
-        //quito el selected de la img
         selectedPiece.classList.remove("selected");
-        // restauro el tamaño original
         selectedPiece.style.width = "30px";
         selectedPiece.style.height = "30px";
         clearPaint();
-        //actualizo la info del aside 
-        updateInfoPiece(selectedPiece);
+        const pieceColor = selectedPiece.classList.contains("whitepieces")
+          ? "white"
+          : "black";
+
+        updateInfoPiece(selectedPiece, pieceColor);
         isPieceMoved = true;
-        //cambio el turno
         changeTurn();
       } else {
-        console.log("No es tu turno");
+        console.log("Es turno del otro jugador");
       }
     }
   });
