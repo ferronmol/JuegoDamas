@@ -105,3 +105,12 @@ function showTurn() {
 }
 
 /* --------------END TURNS ------------------------------- */
+// ACTUALIZAR FICHAS CAPTURADAS E INFORMAR
+function updateCapturePiece() {
+  if (capturedPiece) {
+    //obtengo  el color de la pieza capturada
+
+    //incremento su contandor y lo añado al array que corresponda
+
+  }
+}

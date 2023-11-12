@@ -11,6 +11,9 @@ window.isPieceMoved = false;
 let validMoves = [];
 let selectedPiece = null; // Variable global para almacenar la pieza seleccionada
 let selectedPieceArray = []; // Array para almacenar el boardID y el estado de la pieza seleccionada
+const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
+const row = letters.map((_, i) => i + 1);
+
 // si dentro de mi gridcontainer hago click en una casilla o su children (img) mostrar estado de la casilla
 gridcontainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("squares")) {
@@ -18,7 +21,8 @@ gridcontainer.addEventListener("click", (e) => {
       "The boardID: " +
         e.target.getAttribute("boardID") +
         " has state: " +
-        e.target.getAttribute("state")
+        e.target.getAttribute("state") + " en la fila " + e.target.getAttribute("row") + 
+        " y en la columna " + e.target.getAttribute("column")
     );
   }
   //si tiene cualquier etiqueta img  dentro  de la casilla y es
@@ -70,32 +74,34 @@ function getAdjustedIndex(letter) {
 }
 /* ---- VER SI LAS CASILLAS POSIBLES SON VALIDAS-----*/
 
-function isValidSquare(adjustedIndex, number) {
-  const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
-  const squareID = letters[adjustedIndex] + number;
-
-  if (number >= 1 && number <= 8 && adjustedIndex >= 0 && adjustedIndex <= 7) {
-    // console.log("Valid square:", squareID);
-    return true;
-  } else {
-    // console.log("Invalid square:", squareID);
-    return false;
-  }
+function isValidSquare(newLetterIndex, newNumber,adjustedIndex) {
+  console.log(newLetterIndex,newNumber,adjustedIndex);
+    //si es turno de blancas y el indice ajustado  aumenta es valido
+    if (isWhiteTurn &&  adjustedIndex < newLetterIndex){
+      console.log("La fila de mi pieza: " + adjustedIndex + " debe ser menor posibles filas: " + newLetterIndex );
+      console.log("Valid square:" );
+      return true;
+    }
+    // Si es turno de las negras y el número de fila disminuye, es válido
+    else if (!isWhiteTurn && adjustedIndex > newLetterIndex) {
+      console.log("Valid square:");
+      return true;
+    }
+  
+  console.log("Invalid square:");
+  return false;
 }
-/* ---- FUNCION BOOLEANA SI ESTA LA CASILLA VACIA-----*/
 
+/* ---- FUNCION BOOLEANA SI ESTA LA CASILLA VACIA O TIENE UNA PIEZA ENEMIGA -----*/
 function isEmptySquare(adjustedIndex, number) {
   const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
   const letter = letters[adjustedIndex];
   const square = document.querySelector(`[boardID="${letter}${number}"]`);
-  if (square !== null) {
-    const state = square.getAttribute("state");
-    const isEmpty = state === "empty";
-    //console.log("Is Empty Square:", isEmpty);
-    return isEmpty;
+  const state = square.getAttribute("state");
+  if (state === "empty") {
+    return false; //la casilla esta vacia
   } else {
-    // console.log("Square does not exist");
-    return false;
+    return true; //la casilla tiene una pieza enemiga o propia
   }
 }
 
@@ -107,6 +113,9 @@ export function getValidMoves(selectedPieceArray, validMovesBoard) {
   const boardID = selectedPieceArray[0]; //la casilla donde esta la pieza
   const state = selectedPieceArray[1]; //el estado de la pieza (whitepiece o blackpiece)
   const [letter, number] = getLetterAndNumber(selectedPieceArray[0]);
+  console.log("el letter es " + letter); //ok
+  //convertir ese letter a numero
+  const letterOfSelectedPiece = letter;
   const adjustedIndex = getAdjustedIndex(letter);
   // console.log("adjustedIndex", adjustedIndex); //OK
   const validMoves = [];
@@ -116,19 +125,19 @@ export function getValidMoves(selectedPieceArray, validMovesBoard) {
     [1, -1],
     [1, 1],
   ];
-  //console.log("Letter:", letter);
-  //console.log("Number:", number);
-  //console.log("indice", adjustedIndex);
+  console.log("ROW(letter):", letter); //ok!
+  console.log("COLUMN(number):", number);
+  console.log("EL INDICE_0-7(adjustedIndex)", adjustedIndex);
 
   for (let i = 0; i < direccion.length; i++) {
     const [x, y] = direccion[i];
 
     const newLetterIndex = adjustedIndex + x;
     const newNumber = number + y;
-    //console.log("New Letter Index:", newLetterIndex);
-    //console.log("New Number", newNumber);
+    console.log("New ROW Index:", newLetterIndex); //ok
+    console.log("New column", newNumber);          //ok
 
-    if (
+    if ( // si la fila que esta valorando es valida 
       newLetterIndex >= 0 &&
       newLetterIndex < letters.length &&
       newNumber >= 1 &&
@@ -137,10 +146,12 @@ export function getValidMoves(selectedPieceArray, validMovesBoard) {
       const newLetter = letters[newLetterIndex];
       const newSquareID = `${newLetter}${newNumber}`;
       if (
-        isValidSquare(newLetterIndex, newNumber) &&
-        isEmptySquare(newLetterIndex, newNumber)
+        isValidSquare(newLetterIndex, newNumber, adjustedIndex) &&
+        !isEmptySquare(newLetterIndex, newNumber)
       ) {
         validMoves.push(newSquareID);
+      } else {
+        console.log("Enemy or allied piece found");
       }
     }
   }
@@ -189,7 +200,7 @@ export function selectPieces(seleccion) {
     validMoves.length = 0; // Vacío el array validMoves
     // Obtengo los movimientos válidos y los almaceno en el array validMoves
     validMoves.push(...getValidMoves(selectedPieceArray));
-    console.log("validMoves", validMoves);
+     console.log("validMoves", validMoves);
     paintValidMoves(validMoves);
     isPieceMoved = false;
   } else {
@@ -197,11 +208,9 @@ export function selectPieces(seleccion) {
     console.log("No es tu turno para seleccionar piezas");
   }
 }
-// Función para verificar si una casilla tiene una pieza enemiga
-// function isEnemyPiece(letter, number, state) { //letter y number son  la fila y columna de la casilla
-//   //si el state de la casilla es diferente al state de la pieza seleccionada devuelve true
-//   return document.querySelector(`[boardID="${getSquareID(letter, number)}"]`).getAttribute("state") !== state;
-// }
+export function isEnemyPiece(letter, number, state) {
+  console.log("Estado de la casilla:", state);
+}
 
 /*---------------- END  movimientos válidos-------------------------------*/
 /*--------------------------------   MOVER--------------------------------*/
@@ -211,6 +220,42 @@ export function movePiece(selectedPiece, validMoves) {
   let isPieceMoved = false;
 
   // Maneja el movimiento directamente sin añadir un nuevo oyente del evento
+  gridcontainer.addEventListener("click", (e) => {
+    if (
+      e.target.classList.contains("squares") &&
+      e.target.style.backgroundColor === "green" &&
+      validMoves.includes(e.target.getAttribute("boardID"))
+    ) {
+      let destino = e.target;
+      if (isPieceOfCurrentPlayer(selectedPiece)) {
+        const sourceSquare = selectedPiece.parentNode;
+        destino.setAttribute("state", sourceSquare.getAttribute("state"));
+        destino.appendChild(selectedPiece);
+        sourceSquare.setAttribute("state", "empty");
+        selectedPiece.classList.remove("selected");
+        selectedPiece.style.width = "30px";
+        selectedPiece.style.height = "30px";
+        clearPaint();
+        const pieceColor = selectedPiece.classList.contains("whitepieces")
+          ? "white"
+          : "black";
+
+        updateInfoPiece(selectedPiece, pieceColor);
+        isPieceMoved = true;
+        changeTurn();
+      } else {
+        console.log("Es turno del otro jugador");
+      }
+    }
+  });
+}
+
+/*---------------- END MOVER--------------------------------*/
+/*----------------------------- CAPTURAR PIEZA-----------------*/
+// Función para capturar una pieza
+function capturePiece(selectedPiece, validMoves) {
+  let isPieceMoved = false;
+  // Maneja el quitando la pieza enemiga, quitando mi pieza y colocando mi pieza en la casilla de destino
   gridcontainer.addEventListener("click", (e) => {
     if (
       e.target.classList.contains("squares") &&
@@ -240,5 +285,3 @@ export function movePiece(selectedPiece, validMoves) {
     }
   });
 }
-
-/*---------------- END MOVER--------------------------------*/
